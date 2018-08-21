@@ -4,7 +4,9 @@
 #' convenience functions. For more direct access see the help pages linked at
 #' the end of this page.
 #'
+#' @name calls
 #' @seealso sys.parent
+NULL
 
 #' @details
 #' [caller()] gets the character "name" of the calling function. This function
@@ -16,6 +18,7 @@
 #' As with the [base::sys.call()] function, this function will never return
 #' "itself". That is, `caller(0)` will return the name of the calling function.
 #'
+#' @rdname calls
 #' @export
 #' @usage caller(which = 0)
 #' @param which
@@ -46,7 +49,7 @@ caller <- function(which = 0)
 #' returned as-is, without (e.g.) canonicalization.
 #'
 #' @export
-#' @rdname caller
+#' @rdname calls
 #' @usage script()
 script <- function()
 {
