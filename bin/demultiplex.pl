@@ -104,9 +104,9 @@ use RosenLab::Log::Simple;
 
 =begin comment
 
-INFO: These constants aren't really relevant to usage. They are documented
-within this comment section (albeit still in POD format) so that editors of this
-file may benefit from their description.
+NOTE: These constants aren't really relevant to usage. They are documented in
+this comment section (albeit still in POD format) so that editors of this file
+may benefit from their description.
 
 NOTE: constants defined within a block cannot reference one another, hence the
 splitting of some constants into separate declarations (in order to reduce the
@@ -505,8 +505,8 @@ binmode($log_demux,':encoding(UTF-8)');
 
 =begin comment MAIN
 
-INFO: These section isn't relevant to usage. This POD comment is included solely
-for the purposes of delimiting the "main" script from the other sections.
+NOTE: This "section" isn't relevant to usage. This POD comment is intended only
+to delimit the "main" script from the other code sections.
 
 =end comment
 
@@ -560,7 +560,7 @@ exit(0);
 
 =begin comment head1 SUBROUTINES
 
-INFO: The specifics of these subroutines aren't really relevant to usage. They
+NOTE: The specifics of these subroutines aren't really relevant to usage. They
 are documented within this comment section (albeit still in POD format) so that
 editors of this file may benefit from their description.
 
