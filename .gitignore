@@ -1,0 +1,21 @@
+# Local (project-level) Git-ignored file list
+
+# Binaries and other compiled executables
+# =======================================
+
+# Libraries and included files
+# ============================
+
+# Archives, packages, and other compressed file
+# =============================================
+
+# Databases, logs, and other storage files
+# ========================================
+.RData
+.Rhistory
+
+# Miscellaneous
+# =============
+
+# user-specific project configuration
+.Rproj.user
