@@ -527,12 +527,12 @@ push(@ARGV,getcwd()) unless (@ARGV);
 
 while (my $argument = shift(@ARGV))
 {
-	message("Processing <target>: $argument");
+	message("Processing <target>: ${argument}");
 	# find the target
 	my $target = _find_target(decode('UTF-8',$argument));
 	unless (defined($target))
 	{
-		message("Skipping invalid <target>: $argument");
+		message("Skipping invalid <target>: ${argument}");
 		next;
 	}
 	my @suffices = $_options{'all'}
@@ -571,23 +571,21 @@ editors of this file may benefit from their description.
 sub demultiplex ( $target , $command = $_demultiplex{'command'} , $options  = $_demultiplex{'options'}{'default'}  )
 {
 	# demultiplex
-	message("Demultiplexing: $target");
+	message("Demultiplexing: ${target}");
 	if ($_options{'print'})
 	{
-		debug("Displaying demultiplexing system call: $command $options->@*");
-# 		say $_options{'demux-log'} "$command $options->@*";
-		say $log_demux "$command $options->@*";
+		debug("Displaying demultiplexing system call: ${command} $options->@*");
+		say $log_demux "${command} $options->@*";
 		return;
 	}
-	debug("Executing system call: $command $options->@*");
-	message("$command $options->@*");
-# 	run([$command,$options->@*],'>',$_options{'demux-log'});
+	debug("Executing system call: ${command} $options->@*");
+	message("${command} ${options}->@*");
 	run([$command,$options->@*],'>',$log_demux);
 }
 
 sub statestify ( $target )
 {
-	message("Generating demultiplexing statistics: $target");
+	message("Generating demultiplexing statistics: ${target}");
 	_generate_counts_file($target);
 }
 
@@ -664,7 +662,7 @@ those enabled by the C<--log-file> option.
 
 sub _open_file_handle ( $filename )
 {
-	warning("File already exists (appending): $filename")
+	warning("File already exists (appending): ${filename}")
 		if (-f $filename);
 	return IO::File->new($filename,'>>');
 }
@@ -694,11 +692,11 @@ sub _build_command ()
 	return $command
 		unless ($comparator->ne($command,DEFAULT_COMMAND));
 	# test that command is discoverable and executable
-	debug("Testing <command> is an executable on path: $command");
+	debug("Testing <command> is an executable on path: ${command}");
 	my $path = which($command);
-	fatal("Invalid <command> specified: $command") unless ($path);
+	fatal("Invalid <command> specified: ${command}") unless ($path);
 	# update command path
-	debug("Setting <command> to: $path");
+	debug("Setting <command> to: ${path}");
 	$command = $path;
 	# clear the default options from the options list
 # 	_build_libpath($command);
@@ -717,7 +715,7 @@ Build the demultiplexing command shared object path.
 sub _build_libpath ( $command , $paths = $_demultiplex{'libpath'} )
 {
 	debug("Building <library-path>...");
-	debug("Setting LD_LIBRARY_PATH to: $paths");
+	debug("Setting LD_LIBRARY_PATH to: ${paths}");
 	$ENV{'LD_LIBRARY_PATH'} = $paths;
 	_validate_libpath($command);
 }
@@ -743,10 +741,10 @@ sub _validate_libpath ( $command = $_demultiplex{'command'} )
 	}
 	my ($out_fh,$out_file) = tempfile(UNLINK => 1);
 	my ($err_fh,$err_file) = tempfile(UNLINK => 1);
-	system("ldd $command 1>${out_file} 2>${err_file}");
+	run([$ldd,$command],'1>',$out_file,'2>',$err_file);
 	my @errors = <$err_fh>;
 	return unless (@errors);
-	fatal("Missing required libraries: `ldd $command` for more details.");
+	fatal("Missing required libraries: `ldd ${command}` for more details.");
 }
 
 =begin comment head3 _build_options
@@ -870,7 +868,7 @@ sub _generate_counts_file ( $fastq_dir )
 	my $path = catfile($fastq_dir,'Stats','DemultiplexingStats.xml');
 	return unless ((-f $path) && (-r $path));
 	# parse the file for samples
-	debug("Parsing demultiplexing stats file: $path");
+	debug("Parsing demultiplexing stats file: ${path}");
 	my $xml = XML::LibXML->load_xml(location => $path);
 	my @samples = grep
 		{
@@ -951,11 +949,11 @@ sub _find_target ( $name )
 {
 	debug("Discovering <target>...");
 	# try the given target as an aboslute path
-	debug("Trying <target> as relative path to run directory: $name");
+	debug("Trying <target> as relative path to run directory: ${name}");
 	return $name if (-d $name);
 	# try the target as the name of run directory
 	my $target = catdir(DEFAULT_DATA_DIR,$name);
-	debug("Trying <target> as run directory name in default location: $target");
+	debug("Trying <target> as run directory name in default location: ${target}");
 	return $target if (-d $target);
 	error("Invalid <target> specified: $name");
 	return undef;
@@ -994,7 +992,7 @@ sub _parse_runinfo ( $target )
 					? 'I' . $_->{NumCycles}
 					: 'Y' . $_->{NumCycles};
 			} $xml->findnodes('/RunInfo/Run/Reads/Read');
-		debug("Parsed read mask: $options{'mask'}");
+		debug(sprintf('Parsed read mask: %s',$options{'mask'}));
 	}
 	return %options;
 }
